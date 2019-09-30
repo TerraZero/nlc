@@ -1,0 +1,4 @@
+{
+  "commands": "commands/**/*.js",
+  "services": "src/**/*.service.js"
+}
