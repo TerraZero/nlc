@@ -3,6 +3,7 @@ module.exports.sys.Reflection = require('./src/sys/Reflection');
 module.exports.sys.Launcher = require('./src/sys/Launcher');
 module.exports.sys.Event = require('./src/sys/Event');
 module.exports.sys.Bag = require('./src/sys/Bag');
+module.exports.sys.BagCollection = require('./src/sys/BagCollection');
 module.exports.sys.ConfigManager = require('./src/sys/ConfigManager');
 
 module.exports.errors = {};
