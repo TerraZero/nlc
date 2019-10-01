@@ -62,4 +62,14 @@ module.exports = class Bag {
     return this;
   }
 
+  /**
+   * @returns {this}
+   */
+  clear() {
+    if (this.editable) {
+      this._data = {};
+    }
+    return this;
+  }
+
 }
