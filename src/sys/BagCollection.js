@@ -49,6 +49,28 @@ module.exports = class BagCollection {
   /**
    * @param {string} name
    * @param {any} fallback
+   * @returns {array}
+   */
+  all(name, fallback = undefined) {
+    const values = [];
+
+    for (const [key, bag] of this.bags) {
+      const value = bag.get(name, null);
+
+      if (value === null) {
+        if (fallback === undefined) {
+          values.push(null);
+        }
+      } else {
+        values.push(value);
+      }
+    }
+    return values;
+  }
+
+  /**
+   * @param {string} name
+   * @param {any} fallback
    * @returns {any}
    */
   get(name, fallback = null) {

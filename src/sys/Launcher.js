@@ -27,6 +27,23 @@ module.exports = class Launcher {
     return this._loaded;
   }
 
+  getFiles(path) {
+    const files = [];
+
+    for (const index in this.loaded) {
+      const definition = this.loaded[index];
+      const file = Path.join(definition.root, path);
+
+      if (FS.existsSync(file)) {
+        files.push({
+          index,
+          file,
+        });
+      }
+    }
+    return files;
+  }
+
   /**
    * @param {string} name
    * @returns {any}

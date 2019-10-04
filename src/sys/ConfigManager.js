@@ -4,12 +4,11 @@ module.exports = class ConfigManager {
 
   constructor(manager) {
     this._manager = manager;
-    this._data = new NLC.sys.Bag();
-    this._roots = [];
+    this._data = new NLC.sys.BagCollection();
   }
 
   /**
-   * @returns {NLC.sys.Bag}
+   * @returns {NLC.sys.BagCollection}
    */
   get data() {
     return this._data;
@@ -21,9 +20,10 @@ module.exports = class ConfigManager {
    * @returns {this}
    */
   addConfig(path, definition) {
-    this._roots.push(definition.name);
-    this.data.set(definition.name, JSON.parse(JSON.stringify(definition.config.data)));
-    this.data.set(definition.name + '.path', path);
+    const bag = new NLC.sys.Bag(JSON.parse(JSON.stringify(definition.config.data)));
+
+    bag.set('path', path);
+    this.data.addBag(definition.name, bag);
     return this;
   }
 
@@ -33,12 +33,7 @@ module.exports = class ConfigManager {
    * @returns {any[]}
    */
   all(key, fallback = null) {
-    const values = [];
-
-    for (const root of this._roots) {
-      values.push(this.get(root, key, fallback));
-    }
-    return values;
+    return this.data.all(key, fallback);
   }
 
   /**
@@ -48,7 +43,7 @@ module.exports = class ConfigManager {
    * @returns {any}
    */
   get(name, key, fallback = null) {
-    return this.data.get(name + '.' + key, fallback);
+    return this.data.bags.get(name).get(key, fallback);
   }
 
 }

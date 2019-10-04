@@ -235,6 +235,7 @@ module.exports = class Manager {
     }
 
     this.program.option('-v, --verbose [option]', 'be verbose', true);
+    this.program.option('--debug', 'debug');
     this.program.option('-q, --quite', 'be quite');
 
     // error on unknown commands
@@ -246,6 +247,9 @@ module.exports = class Manager {
     this.program.on('option:verbose', (verbose) => {
       if (verbose === null) verbose = true;
       this.logger.setVerbose(verbose, true);
+    });
+    this.program.on('option:debug', () => {
+      this.logger.setVerbose(NLC.loggers.Logger.VERBOSE_ALL, true);
     });
     this.program.on('option:quite', () => {
       this.logger.setVerbose(NLC.loggers.Logger.VERBOSE_QUITE, true);

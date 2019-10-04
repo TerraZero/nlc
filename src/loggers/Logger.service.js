@@ -225,7 +225,7 @@ module.exports = class Logger {
    * @param {(string|import('../../defs').Inserter)} inserter
    */
   doSuccess(message = '', placeholders = {}, inserter = '"') {
-    console.log(NLC.sys.Reflection.replaceObject(message, placeholders, inserter));
+    console.log('[SUCCESS]:', NLC.sys.Reflection.replaceObject(message, placeholders, inserter));
   }
 
   /**
@@ -247,7 +247,7 @@ module.exports = class Logger {
    * @param {(string|import('../../defs').Inserter)} inserter
    */
   doFailed(message = '', placeholders = {}, inserter = '"') {
-    console.log(NLC.sys.Reflection.replaceObject(message, placeholders, inserter));
+    console.log('[FAILED]:', NLC.sys.Reflection.replaceObject(message, placeholders, inserter));
   }
 
 }
