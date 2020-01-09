@@ -1,3 +1,3 @@
-const NLC = require('../../index');
+const CommandError = require('nlc/src/errors/CommandError');
 
-module.exports = class ManagerError extends NLC.errors.CommandError { }
+module.exports = class ManagerError extends CommandError { }

@@ -15,5 +15,8 @@
     "commander": "^3.0.1",
     "glob": "^7.1.4",
     "jsonschema": "^1.2.4"
+  },
+  "devDependencies": {
+    "nlc": "file:."
   }
 }

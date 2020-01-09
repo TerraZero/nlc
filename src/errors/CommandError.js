@@ -1,6 +1,6 @@
-const NLC = require('../../index');
+const Error = require('nlc/src/errors/Error');
 
-module.exports = class CommandError extends NLC.errors.Error {
+module.exports = class CommandError extends Error {
 
   constructor(code, message, placeholders = {}, inserter = '"') {
     if (!Array.isArray(placeholders)) {

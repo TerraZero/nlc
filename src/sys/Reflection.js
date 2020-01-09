@@ -89,6 +89,13 @@ module.exports = class Reflection {
   }
 
   /**
+   * @param {Array} array
+   */
+  static unique(array) {
+    return array.filter((item, pos, array) => array.indexOf(item) === pos);
+  }
+
+  /**
    * @param {Object} data
    * @param {string} name
    * @param {any} value

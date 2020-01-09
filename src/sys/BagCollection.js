@@ -1,5 +1,3 @@
-const NLC = require('../../index');
-
 module.exports = class BagCollection {
 
   /**
@@ -11,7 +9,7 @@ module.exports = class BagCollection {
   }
 
   /**
-   * @returns {Map<string, NLC.sys.Bag>}
+   * @returns {Map<string, import('nlc/src/sys/Bag')>}
    */
   get bags() {
     return this._bags;
@@ -29,7 +27,7 @@ module.exports = class BagCollection {
 
   /**
    * @param {string} name
-   * @param {NLC.sys.Bag} bag
+   * @param {import('nlc/src/sys/Bag')} bag
    * @returns {this}
    */
   addBag(name, bag) {

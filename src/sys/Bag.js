@@ -1,4 +1,4 @@
-const NLC = require('../../index');
+const Reflection = require('nlc/src/sys/Reflection');
 
 module.exports = class Bag {
 
@@ -36,7 +36,7 @@ module.exports = class Bag {
    * @returns {any}
    */
   get(name, fallback = null) {
-    return NLC.sys.Reflection.getDeep(this.data, name, fallback);
+    return Reflection.getDeep(this.data, name, fallback);
   }
 
   /**
@@ -46,7 +46,7 @@ module.exports = class Bag {
    */
   set(name, value) {
     if (this.editable) {
-      NLC.sys.Reflection.setDeep(this.data, name, value);
+      Reflection.setDeep(this.data, name, value);
     }
     return this;
   }
@@ -57,7 +57,7 @@ module.exports = class Bag {
    */
   remove(name) {
     if (this.editable) {
-      NLC.sys.Reflection.removeDeepRecursive(this.data, name);
+      Reflection.removeDeepRecursive(this.data, name);
     }
     return this;
   }

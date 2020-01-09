@@ -1,6 +1,6 @@
-const NLC = require('../../index');
+const Bag = require('nlc/src/sys/Bag');
 
-module.exports = class Storage extends NLC.sys.Bag {
+module.exports = class Storage extends Bag {
 
   constructor(context) {
     super();

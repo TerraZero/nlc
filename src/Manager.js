@@ -1,52 +1,61 @@
 const Path = require('path');
 const Glob = require('glob');
 const OS = require('os');
-const program = require('commander');
+const Commander = require('commander');
 const EventEmitter = require('events');
 
-const NLC = require('../index');
+const Request = require('nlc/src/Request');
+const Command = require('nlc/src/Command');
+
+const ConfigManager = require('nlc/src/sys/ConfigManager');
+const Launcher = require('nlc/src/sys/Launcher');
+const Event = require('nlc/src/sys/Event');
+
+const ServiceFactory = require('nlc/src/factories/ServiceFactory');
+const Logger = require('nlc/src/loggers/Logger.service');
+const ManagerError = require('nlc/src/errors/ManagerError');
 
 module.exports = class Manager {
 
   constructor() {
     this._commands = {};
-    this._services = new NLC.factories.ServiceFactory(this);
+    this._services = new ServiceFactory(this);
     this._logger = null;
     this._events = new EventEmitter();
     this._requests = [];
     this._booted = false;
     this._bootCommands = false;
-    this._config = new NLC.sys.ConfigManager(this);
+    this._config = new ConfigManager(this);
 
-    this._launcher = new NLC.sys.Launcher('nlc');
+    this._launcher = new Launcher('nlc');
     this._launcher.boot('nlc:script', Path.join(__dirname, '..'));
     this._launcher.boot('nlc:home', OS.homedir(), false);
     this._launcher.boot('nlc:cwd', process.cwd());
   }
 
   /**
-   * @returns {NLC.sys.Launcher}
+   * @returns {Launcher}
    */
   get launcher() {
     return this._launcher;
   }
 
   /**
-   * @returns {Object<string, import('../defs').CommandDefinition>}
+   * @returns {Object<string, import('nlc/defs').CommandDefinition>}
    */
   get commands() {
     return this._commands;
   }
 
   /**
-   * @returns {NLC.Commander}
+   * @returns {Commander}
    */
   get program() {
-    return program;
+    return Commander;
   }
 
   /**
-   * @returns {NLC.loggers.CommandLogger}
+   * @returns {import('nlc/src/loggers/Logger.service')}
    */
   get logger() {
     if (this._logger === null) {
@@ -63,21 +72,21 @@ module.exports = class Manager {
   }
 
   /**
-   * @returns {NLC.factories.ServiceFactory}
+   * @returns {ServiceFactory}
    */
   get services() {
     return this._services;
   }
 
   /**
-   * @returns {NLC.Request}
+   * @returns {Request}
    */
   get request() {
     return this._requests[this._requests.length - 1];
   }
 
   /**
-   * @returns {NLC.sys.ConfigManager}
+   * @returns {ConfigManager}
    */
   get config() {
     return this._config;
@@ -97,14 +106,14 @@ module.exports = class Manager {
    * @returns {Promise}
    */
   trigger(event, ...args) {
-    const e = new NLC.sys.Event(event, this, args);
+    const e = new Event(event, this, args);
     this.event.emit(event, e);
     return e.promise;
   }
 
   /**
    * @param {string} event
-   * @param {import('../defs').eventListener} listener
+   * @param {import('nlc/defs').eventListener} listener
    * @returns {this}
    */
   on(event, listener) {
@@ -123,11 +132,11 @@ module.exports = class Manager {
       this.config.addConfig(path, this.launcher.loaded[path]);
     }
 
-    this.trigger(NLC.sys.Event.ON_CONFIG, this.config);
+    this.trigger(Event.ON_CONFIG, this.config);
 
     this.bootingServices(this.config.all('services'), this.config.all('path'));
 
-    this.trigger(NLC.sys.Event.ON_BOOT);
+    this.trigger(Event.ON_BOOT);
   }
 
   bootCommands() {
@@ -221,13 +230,13 @@ module.exports = class Manager {
     for (const name in this.commands) {
       this.commands[name].command.doInit()
         .action(async (...args) => {
-          this._requests.push(new NLC.Request(args, this._requests.length && this._requests[this._requests.length - 1] || null));
+          this._requests.push(new Request(args, this._requests.length && this._requests[this._requests.length - 1] || null));
           const back = await this.commands[name].command.doAction();
           this._requests.pop();
 
           // fix for windows
           if (this._requests.length === 0) {
-            await this.trigger(NLC.sys.Event.ON_EXIT);
+            await this.trigger(Event.ON_EXIT);
             process.exit(0);
           }
           return back;
@@ -249,10 +258,10 @@ module.exports = class Manager {
       this.logger.setVerbose(verbose, true);
     });
     this.program.on('option:debug', () => {
-      this.logger.setVerbose(NLC.loggers.Logger.VERBOSE_ALL, true);
+      this.logger.setVerbose(Logger.VERBOSE_ALL, true);
     });
     this.program.on('option:quite', () => {
-      this.logger.setVerbose(NLC.loggers.Logger.VERBOSE_QUITE, true);
+      this.logger.setVerbose(Logger.VERBOSE_QUITE, true);
     });
   }
 
@@ -267,7 +276,7 @@ module.exports = class Manager {
     }
 
     this.bootCommands();
-    await this.trigger(NLC.sys.Event.ON_EXECUTE, argv);
+    await this.trigger(Event.ON_EXECUTE, argv);
     await this.program.parse(argv);
   }
 
@@ -277,7 +286,7 @@ module.exports = class Manager {
     const subject = require(file);
     const command = new subject(this);
 
-    if (command instanceof NLC.Command) {
+    if (command instanceof Command) {
       this._commands[file] = {
         path,
         file,
@@ -286,7 +295,7 @@ module.exports = class Manager {
         command,
       };
     } else {
-      throw new NLC.errors.ManagerError(1, 'The file path is not a NLC.Command from nlc package.', { path: file });
+      throw new ManagerError(1, 'The file path is not a NLC.Command from nlc package.', { path: file });
     }
   }
 

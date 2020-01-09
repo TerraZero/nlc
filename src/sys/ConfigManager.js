@@ -1,14 +1,15 @@
-const NLC = require('../../index');
+const Bag = require('nlc/src/sys/Bag');
+const BagCollection = require('nlc/src/sys/BagCollection');
 
 module.exports = class ConfigManager {
 
   constructor(manager) {
     this._manager = manager;
-    this._data = new NLC.sys.BagCollection();
+    this._data = new BagCollection();
   }
 
   /**
-   * @returns {NLC.sys.BagCollection}
+   * @returns {BagCollection}
    */
   get data() {
     return this._data;
@@ -16,11 +17,11 @@ module.exports = class ConfigManager {
 
   /**
    * @param {string} path
-   * @param {import('../../defs').LauncherDefinition} definition
+   * @param {import('nlc/defs').LauncherDefinition} definition
    * @returns {this}
    */
   addConfig(path, definition) {
-    const bag = new NLC.sys.Bag(JSON.parse(JSON.stringify(definition.config.data)));
+    const bag = new Bag(JSON.parse(JSON.stringify(definition.config.data)));
 
     bag.set('path', path);
     this.data.addBag(definition.name, bag);
@@ -32,7 +33,7 @@ module.exports = class ConfigManager {
    * @param {any} fallback
    * @returns {any[]}
    */
-  all(key, fallback = null) {
+  all(key, fallback = undefined) {
     return this.data.all(key, fallback);
   }
 

@@ -7,7 +7,7 @@ module.exports = class Event {
 
   /**
    * @param {string} event
-   * @param {import('../../index').Manager} manager
+   * @param {import('nlc/src/Manager')} manager
    * @param {Array} args
    */
   constructor(event, manager, args) {
@@ -25,7 +25,7 @@ module.exports = class Event {
   }
 
   /**
-   * @returns {import('../../index').Manager}
+   * @returns {import('nlc/src/Manager')}
    */
   get manager() {
     return this._manager;

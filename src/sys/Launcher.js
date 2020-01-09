@@ -1,7 +1,7 @@
 const FS = require('fs');
 const Path = require('path');
 
-const NLC = require('../../index');
+const JSONStorage = require('nlc/src/storages/JSONStorage');
 
 module.exports = class Launcher {
 
@@ -21,7 +21,7 @@ module.exports = class Launcher {
   }
 
   /**
-   * @returns {Object<string, import('../../defs').LauncherDefinition>}
+   * @returns {Object<string, import('nlc/defs').LauncherDefinition>}
    */
   get loaded() {
     return this._loaded;
@@ -67,7 +67,7 @@ module.exports = class Launcher {
     const root = this.lookup(path, bubble);
 
     if (root && !this.loaded[root]) {
-      const storage = new NLC.storages.JSONStorage({ name, path, root });
+      const storage = new JSONStorage({ name, path, root });
 
       this.loaded[root] = {
         name,

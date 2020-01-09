@@ -1,7 +1,8 @@
 const FS = require('fs');
-const NLC = require('../../index');
 
-module.exports = class JSONStorage extends NLC.storages.Storage {
+const Storage = require('nlc/src/storages/Storage');
+
+module.exports = class JSONStorage extends Storage {
 
   create(path) {
     this._path = path;

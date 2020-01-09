@@ -1,9 +1,8 @@
-const NLC = require('../index');
-const Path = require('path');
-const FS = require('fs');
 const JSONSchema = require('jsonschema');
 
-module.exports = class ConfigCheckCommand extends NLC.Command {
+const Command = require('nlc/src/Command');
+
+module.exports = class ConfigCheckCommand extends Command {
 
   init() {
     return this.command('config:check');

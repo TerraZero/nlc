@@ -1,19 +1,21 @@
-const NLC = require('../index');
+const Commander = require('commander');
+
+const Bag = require('nlc/src/sys/Bag');
 
 module.exports = class Request {
 
   /**
    * @param {Array} args
-   * @param {NLC.Request} parent
+   * @param {import('nlc/src/Request')} parent
    */
   constructor(args, parent = null) {
     this._args = args;
     this._program = null;
     this._options = {};
-    this._bag = new NLC.sys.Bag();
+    this._bag = new Bag();
     this._parent = parent;
 
-    if (args[args.length - 1] instanceof NLC.Commander.Command) {
+    if (args[args.length - 1] instanceof Commander.Command) {
       this._program = args.pop();
     }
 
@@ -44,21 +46,21 @@ module.exports = class Request {
   }
 
   /**
-   * @returns {NLC.Commander.Command}
+   * @returns {Commander.Command}
    */
   get program() {
     return this._program;
   }
 
   /**
-   * @returns {NLC.Request}
+   * @returns {import('nlc/src/Request')}
    */
   get parent() {
     return this._parent;
   }
 
   /**
-   * @returns {NLC.Request}
+   * @returns {import('nlc/src/Request')}
    */
   get root() {
     let request = this;
@@ -70,7 +72,7 @@ module.exports = class Request {
   }
 
   /**
-   * @returns {NLC.sys.Bag}
+   * @returns {Bag}
    */
   get bag() {
     return this._bag;

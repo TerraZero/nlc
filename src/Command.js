@@ -1,4 +1,4 @@
-const NLC = require('../index');
+const CommandError = require('nlc/src/errors/CommandError');
 
 module.exports = class Command {
 
@@ -8,41 +8,48 @@ module.exports = class Command {
   }
 
   /**
-   * @returns {NLC.Manager}
+   * @returns {import('nlc/src/Manager')}
    */
   get manager() {
     return this._manager;
   }
 
   /**
-   * @returns {NLC.loggers.Logger}
+   * @returns {import('nlc/src/loggers/Logger.service')}
    */
   get logger() {
     return this.manager.logger;
   }
 
   /**
-   * @returns {NLC.Request}
+   * @returns {import('nlc/src/Request')}
    */
   get request() {
     return this.manager.request;
   }
 
+  /**
+   * @returns {boolean}
+   */
   isInited() {
     return this._definition !== null;
   }
 
   /**
    * @param {string} definition
-   * @returns {NLC.Commander}
+   * @returns {import('commander')}
    */
   command(definition) {
     return this.manager.program.command(definition);
   }
 
+  /**
+   * @param {import('nlc/src/loggers/Logger.service')} logger
+   * @returns {this}
+   */
   setLogger(logger) {
     if (!this.isInited()) {
-      throw new NLC.errors.NLCCommandError(2, 'Logger can only be set in action method.');
+      throw new CommandError(2, 'Logger can only be set in action method.');
     }
     this.manager.setLogger(logger);
     return this;

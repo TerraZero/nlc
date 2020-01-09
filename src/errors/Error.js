@@ -1,10 +1,11 @@
-const NLC = require('../../index');
-const E = Error;
+const PrivateError = Error;
 
-module.exports = class Error extends E {
+const Reflection = require('nlc/src/sys/Reflection');
+
+module.exports = class Error extends PrivateError {
 
   constructor(message, placeholders, inserter = '"') {
-    super(NLC.sys.Reflection.replaceMessage(message, placeholders, inserter));
+    super(Reflection.replaceMessage(message, placeholders, inserter));
   }
 
 }
