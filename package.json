@@ -3,17 +3,13 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
-  "bin": {
-    "nlc": "./bin/nlc.js"
-  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "TerraZero",
   "license": "ISC",
   "dependencies": {
-    "commander": "^3.0.1",
     "glob": "^7.1.4",
-    "jsonschema": "^1.2.4"
+    "node-dependency-injection": "^2.5.0"
   }
 }
