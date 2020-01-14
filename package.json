@@ -9,7 +9,10 @@
   "author": "TerraZero",
   "license": "ISC",
   "dependencies": {
-    "glob": "^7.1.4",
-    "node-dependency-injection": "^2.5.0"
+    "find-package-json": "^1.2.0",
+    "glob": "^7.1.4"
+  },
+  "devDependencies": {
+    "nlc": "file:."
   }
 }

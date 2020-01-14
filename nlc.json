@@ -1,4 +1,22 @@
 {
+  "logger": {
+    "level": "all",
+    "appender": [
+      {
+        "type": "file",
+        "logFilePath": "./mylogfile.log"
+      },
+      {
+        "type": "rollingfile",
+        "errorEventName": "error",
+        "logDirectory": "./logs",
+        "fileNamePattern": "<DATE>.log",
+        "dateFormat": "YYYY.MM.DD",
+        "level": "all",
+        "prettyPrint": true
+      }
+    ]
+  },
   "commands": "commands/**/*.js",
   "services": "src/**/*.service.js"
 }
