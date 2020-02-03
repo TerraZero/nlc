@@ -88,4 +88,12 @@ export default class Core {
     }
   }
 
+  /**
+   * @param {string} name
+   * @returns {any}
+   */
+  service(name) {
+    return this.container.get(name);
+  }
+
 }
