@@ -1,11 +1,26 @@
 {
+  "services": {
+    "nlc.core": {
+      "synthetic": true
+    },
+    "nlc.require": {
+      "synthetic": true
+    },
+    "nlc.logger": {
+      "synthetic": true
+    },
+    "nlc.command.core": {
+      "class": "src/commands/CoreCommand",
+      "tags": [
+        {
+          "name": "command"
+        }
+      ]
+    }
+  },
   "logger": {
     "level": "all",
     "appender": [
-      {
-        "type": "file",
-        "logFilePath": "./mylogfile.log"
-      },
       {
         "type": "rollingfile",
         "errorEventName": "error",
@@ -18,5 +33,7 @@
     ]
   },
   "commands": "commands/**/*.js",
-  "services": "src/**/*.service.js"
+  "extensions": [
+    "nlc-util"
+  ]
 }

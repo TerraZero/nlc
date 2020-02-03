@@ -4,15 +4,14 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "preinstall": "localdev uninstall T:/projects nlc-util nlc-sql",
+    "postinstall": "localdev install T:/projects nlc-util nlc-sql",
+    "start": "node -r esm _debug.js"
   },
   "author": "TerraZero",
   "license": "ISC",
   "dependencies": {
-    "find-package-json": "^1.2.0",
-    "glob": "^7.1.4"
-  },
-  "devDependencies": {
-    "nlc": "file:."
+    "esm": "^3.2.25"
   }
 }
