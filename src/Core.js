@@ -37,8 +37,13 @@ export default class Core {
     return this._container;
   }
 
-  boot(cwd = null) {
+  isCli() {
+    return this._cli;
+  }
+
+  boot(cwd = null, cli = false) {
     cwd = cwd || process.cwd();
+    this._cli = cli;
 
     this.loadConfig('cwd', cwd);
     this.loadConfig('home', OS.homedir());
@@ -46,8 +51,8 @@ export default class Core {
 
     this._logger = new LoggerBuilder();
 
-    this.logger.install(this.config.get('nlc.logger'));
-    this._corelog = this._logger.logger('core');
+    this.logger.install(this.config.get('nlc.logger'), this._cli);
+    this._corelog = this.logger.logger('core');
 
     const bootlog = this._corelog.create('boot');
 
@@ -61,7 +66,7 @@ export default class Core {
     bootlog.trace('Register default services...');
     this.container.set('nlc.core', this);
     this.container.set('nlc.require', this._require);
-    this.container.set('nlc.logger', this._logger);
+    this.container.set('nlc.logger', this.logger);
 
     bootlog.trace('Register dynamic services...');
     for (const [, bag] of this.extensions.bags) {

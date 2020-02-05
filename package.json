@@ -5,8 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "preinstall": "localdev uninstall T:/projects nlc-util nlc-sql",
-    "postinstall": "localdev install T:/projects nlc-util nlc-sql",
+    "preinstall": "localdev uninstall T:/projects nlc-util nlc-sql nlc-cli",
+    "postinstall": "localdev install T:/projects nlc-util nlc-sql nlc-cli",
     "start": "node -r esm _debug.js"
   },
   "author": "TerraZero",

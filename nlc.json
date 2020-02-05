@@ -8,14 +8,6 @@
     },
     "nlc.logger": {
       "synthetic": true
-    },
-    "nlc.command.core": {
-      "class": "src/commands/CoreCommand",
-      "tags": [
-        {
-          "name": "command"
-        }
-      ]
     }
   },
   "logger": {
@@ -32,8 +24,8 @@
       }
     ]
   },
-  "commands": "commands/**/*.js",
   "extensions": [
-    "nlc-util"
+    "nlc-util",
+    "nlc-cli"
   ]
 }
