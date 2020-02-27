@@ -10,6 +10,19 @@
       "synthetic": true
     }
   },
+  "databases": {
+    "default": {
+      "target": {
+        "client": "sqlite3",
+        "connection": {
+          "filename": "./databases/default.sqlite3"
+        },
+        "useNullAsDefault": true
+      },
+      "storage": "nlc.sql.storage",
+      "models": "*"
+    }
+  },
   "logger": {
     "level": "all",
     "appender": [
@@ -26,6 +39,8 @@
   },
   "extensions": [
     "nlc-util",
-    "nlc-cli"
+    "nlc-cli",
+    "nlc-sql",
+    "nlc-serve"
   ]
 }

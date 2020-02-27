@@ -10,15 +10,15 @@ import Injection from 'nlc-util/src/loader/Injection';
 
 export default class Core {
 
-  constructor(master_require) {
+  constructor(master_require = null) {
+    this._require = master_require || require;
     this._config = new BagCollection();
     this._container = new Injection();
-    this._finder = new Finder(master_require);
+    this._finder = new Finder(this._require);
     this._extensions = new BagCollection();
 
     this._logger = null;
     this._corelog = null;
-    this._require = master_require;
   }
 
   get config() {
@@ -35,6 +35,10 @@ export default class Core {
 
   get container() {
     return this._container;
+  }
+
+  createLogger(context, level = null) {
+    return this.logger.logger(context, level);
   }
 
   isCli() {
@@ -59,9 +63,9 @@ export default class Core {
     bootlog.trace('Start booting...');
 
     bootlog.trace('Register extensions...');
-    this._finder.register(this._extensions, cwd);
-    this._finder.register(this._extensions, OS.homedir());
-    this._finder.register(this._extensions, this._finder.getInfo(module).value.name);
+    this._finder.register(this._extensions, cwd, bootlog);
+    this._finder.register(this._extensions, OS.homedir(), bootlog);
+    this._finder.register(this._extensions, this._finder.getInfo(module).value.name, bootlog);
 
     bootlog.trace('Register default services...');
     this.container.set('nlc.core', this);
@@ -77,6 +81,7 @@ export default class Core {
     this.container.init();
 
     this.container.trigger('on.core.boot', this, this.container);
+    this.preCompile();
     this.container.container.compile();
     this.container.trigger('on.core.init', this, this.container);
 
@@ -99,6 +104,15 @@ export default class Core {
    */
   service(name) {
     return this.container.get(name);
+  }
+
+  preCompile() {
+    let index = null;
+    for (const [, definition] of this.container.container.definitions) {
+      if ((index = definition.tags.indexOf('lazy')) !== false) {
+        definition.lazy = true;
+      }
+    }
   }
 
 }
