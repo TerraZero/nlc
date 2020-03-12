@@ -77,7 +77,6 @@ export default class Core {
       this.container.loader.load(bag.get('_path'));
     }
 
-    global.NLC = this;
     this.container.init();
 
     this.container.trigger('on.core.boot', this, this.container);
@@ -107,9 +106,8 @@ export default class Core {
   }
 
   preCompile() {
-    let index = null;
     for (const [, definition] of this.container.container.definitions) {
-      if ((index = definition.tags.indexOf('lazy')) !== false) {
+      if (definition.tags.indexOf('lazy') !== false) {
         definition.lazy = true;
       }
     }
